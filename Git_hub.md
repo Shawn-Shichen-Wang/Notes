@@ -158,6 +158,7 @@ git clone https://github.com/udacity/course-git-blog-project
 ### git log **显示SHA，提交者信息，提交时间，提交内容备注**
 
 - **--oneline 只显示SHA前7位，提交内容备注**
+- SHA 作为最后一个参数 git log -p fdf5493
 - **--stat 显示 commit 中更改的文件以及添加或删除的行数(stat 是“统计信息 statistics”的简称)**
 - **--patch or -p 显示对文件作出的实际更改**
   - 🔵 - 正在显示的文件
@@ -171,7 +172,6 @@ git clone https://github.com/udacity/course-git-blog-project
     - 用红色标示并以减号 (-) 开头的行是位于文件原始版本中，但是被 commit 删除的行
     - 用绿色标示并以加号 (+) 开头的行是 commit 新加的行
   - -w 忽略空格更改向所有这些命令提供 commit 的 
-  - SHA 作为最后一个参数 git log -p fdf5493
 - **--graph 选项将条目和行添加到输出的最左侧。显示了实际的分支。**
 - **--all 选项会显示仓库中的所有分支。**
 - **--author=Surma**
@@ -191,10 +191,12 @@ git clone https://github.com/udacity/course-git-blog-project
 ### git add **将文件上传到暂存区**
 
 - git rm --cached <file>，与 shell 的 rm 命令不同。git rm --cached 不会破坏任何属于你的文件，它只是从暂存区删掉了文件。
-- 可接受多个文件名（用空格分隔）
-- 此外，可以使用句点 . 来代替文件列表，告诉 git 添加当前目录至暂存区（以及所有嵌套文件）把将要进行提交的文件添加到了暂存区
+- 可接受多个文件名（用**空格**分隔）
+- 此外，可以使用句点 . 来代替文件列表，告诉 git 添加当前目录至暂存区（以及所有嵌套文件）把将要进行提交的文件添加到暂存区
 
 ### git commit 
+
+
 
 
 
