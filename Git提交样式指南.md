@@ -1,4 +1,4 @@
-# Git 提交信息样式指南
+# [[Git 提交信息样式指南]]
 
 点此查看文档英文版（[pdf](https://s3.cn-north-1.amazonaws.com.cn/static-documents/nd001/Udacity+Nanodegree+Style+Guide_CSS_EN.pdf)，[GitHub.io](http://udacity.github.io/frontend-nanodegree-styleguide/css.html)）
 
