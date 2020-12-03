@@ -1,5 +1,5 @@
 [TOC]
-# Git
+# [[Git]]
 
 ## 三个区域
 
@@ -155,12 +155,28 @@ git clone https://github.com/udacity/course-git-blog-project
     - b 按照整个屏幕幅面移动
   - 按下 q 可以退出日志（返回普通的命令提示符）
 
+### git add **将文件上传到暂存区**
+
+- git rm --cached <file>，删除**暂存区**文件，不会破坏**工作区**文件。
+- 可接受多个文件名（用**空格**分隔）
+-  `git add . `来代替文件列表，告诉 git 添加当前目录至暂存区（以及所有嵌套文件）
+
+### git commit 
+
+- 
+
 ### git log **显示SHA，提交者信息，提交时间，提交内容备注**
 
 - **--oneline 只显示SHA前7位，提交内容备注**
+
 - SHA 作为最后一个参数 git log -p fdf5493
+
 - **--stat 显示 commit 中更改的文件以及添加或删除的行数(stat 是“统计信息 statistics”的简称)**
+
 - **--patch or -p 显示对文件作出的实际更改**
+  
+  ![img](Git_hub.assets/ud123-l3-git-log-p-lines-removed-annotated.png)
+  
   - 🔵 - 正在显示的文件
   - 🔶 - 文件第一版的哈希值和第二版的哈希值
     - 通常不重要，因此可以忽略
@@ -172,35 +188,35 @@ git clone https://github.com/udacity/course-git-blog-project
     - 用红色标示并以减号 (-) 开头的行是位于文件原始版本中，但是被 commit 删除的行
     - 用绿色标示并以加号 (+) 开头的行是 commit 新加的行
   - -w 忽略空格更改向所有这些命令提供 commit 的 
+  
 - **--graph 选项将条目和行添加到输出的最左侧。显示了实际的分支。**
+
 - **--all 选项会显示仓库中的所有分支。**
+
 - **--author=Surma**
+  
   - git log --author="Paul Lewis",**引号很重要**！
+  
 - **--grep=bug**
   -  💡 grep 的更多说明 💡
   -  Grep 是一个模式匹配工具，它不在本课程教学范围内。但是简单介绍一下，如果你运行 git log --grep "fort"，那么 Git 将显示顺序包含字符 f、o、r、t 的 commit 。
 
 ### git show **显示最近的单个commit**
 
-- 也可以将 SHA 作为最后一个参数提供给命令
+- SHA 作为最后一个参数提供给命令
+- 与`git log SHA`区别是仅显示一条，git log 显示的是SHA之前的所有commit信息
 - git show 可以与我们了解过的大部分其他选项一起使用：
   - --stat 显示更改了多少文件，以及添加/删除的行数
   - -p 或 --patch 显示默认补丁信息，但是如果使用了 --stat，将不显示补丁信息，因此传入 -p 以再次添加该信息
   - -w 忽略空格变化
 
-### git add **将文件上传到暂存区**
-
-- git rm --cached <file>，与 shell 的 rm 命令不同。git rm --cached 不会破坏任何属于你的文件，它只是从暂存区删掉了文件。
-- 可接受多个文件名（用**空格**分隔）
-- 此外，可以使用句点 . 来代替文件列表，告诉 git 添加当前目录至暂存区（以及所有嵌套文件）把将要进行提交的文件添加到暂存区
-
-### git commit 
+### 
 
 
 
 
 
-# Github
+# [[Github]]
 
 ## 一个好的GitHub个人档案所需要具备的元素有：
 
@@ -237,7 +253,7 @@ git clone https://github.com/udacity/course-git-blog-project
 
 
 
-## 提交说明
+## [[提交说明]]
 
 1. 第一行是主题。它应该简要说明更改的内容。不建议使用“修复”或“执行了某些操作”这类字眼，主题需要清楚、信息丰富，并努力避免使用亵渎语言。主题不应超过 50 个字符，首字母大写，不以句点结尾。在优达学城，如果提交的类型是错误修复、功能、文档更改等，我们还会包含有关提交类型的简短注释。
 
