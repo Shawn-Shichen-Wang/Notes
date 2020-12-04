@@ -427,7 +427,8 @@ git clone https://github.com/udacity/course-git-blog-project
 
 - `git remote add origin https://github.com/aalonelyy/my-travel-plans.git` 下载远程仓库命名为origin
 - -v 查看远程仓库的完整路径
-- `git remote rename mine origin` rename
+- `git remote rename mine origin` 重命名
+- `git remote remove <name>` 删除
 
 ### git push
 
