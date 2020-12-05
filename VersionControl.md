@@ -446,10 +446,9 @@ git clone https://github.com/udacity/course-git-blog-project
     - 使用 x 或 exec – 运行 shell 命令
     - 使用 d 或 drop – 删除 commit
 - 进行rebase前可以先创建一个backup分支，否则将直接删除被压缩的commit，HEAD直接跳到压缩后的新commit上
-- 如果你已push了你想要进行rebash的 commit，那么就不应该进行这次rebash。
+- 如果你已push了你想要进行rebase的 commit，那么就不应该进行这次rebase。
     - 因为会删除几项commit
     - 其他开发者会***打死你*** (其实不会)
-    - 
 
 ## **GitHub Issues**
 
