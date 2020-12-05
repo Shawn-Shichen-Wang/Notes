@@ -212,7 +212,7 @@ git clone https://github.com/udacity/course-git-blog-project
 
 - **--patch or -p 显示对文件作出的实际更改**
   
-  ![img](Git_hub.assets/ud123-l3-git-log-p-lines-removed-annotated.png)
+  ![img](VersionControl.assets/ud123-l3-git-log-p-lines-removed-annotated.png)
   
   - 🔵 - 正在显示的文件
   - 🔶 - 文件第一版的哈希值和第二版的哈希值
@@ -501,7 +501,7 @@ git clone https://github.com/udacity/course-git-blog-project
   - Fork $\Rightarrow$ origin
   - Original $\Rightarrow$ upstream
 
-![image-20201203164158730](Git_hub.assets/image-20201203164158730.png)
+![image-20201203164158730](VersionControl.assets/image-20201203164158730.png)
 
 - 同步
 
