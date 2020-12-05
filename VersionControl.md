@@ -79,7 +79,13 @@
          > git config --global core.editor "code --wait"
          > ```
 
+5. 中国大陆 SOCKS5代理
 
+   > ```bash
+   > # 7891是Clash Socks5默认端口
+   > git config --global http.https://github.com.proxy socks5://127.0.0.1:7891
+   > git config --global https.https://github.com.proxy socks5://127.0.0.1:7891 
+   > ```
 
 [Git 基础 - 获取 Git 仓库 - 英](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository#Initializing-a-Repository-in-an-Existing-Directory) | [中](https://git-scm.com/book/zh/v2/Git-基础-获取-Git-仓库)
 
