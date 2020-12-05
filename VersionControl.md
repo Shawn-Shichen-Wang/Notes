@@ -87,6 +87,13 @@
    > git config --global https.https://github.com.proxy socks5://127.0.0.1:7891 
    > ```
 
+6. 支持中文
+
+    > ```bash
+    > git config --global core.quotepath false
+    > ```
+
+
 [Git 基础 - 获取 Git 仓库 - 英](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository#Initializing-a-Repository-in-an-Existing-Directory) | [中](https://git-scm.com/book/zh/v2/Git-基础-获取-Git-仓库)
 
 ## Git 命令
@@ -141,12 +148,6 @@ git clone https://github.com/udacity/course-git-blog-project
 - `git clone <path-to-repository-to-clone> new_name` 将项目**重命名**为 new_name
 
 ### git status
-
-- 支持中文
-
-  ```bash
-  git config --global core.quotepath false
-  ```
 
 - 告诉我们已在工作目录中被创建但 Git 尚未开始跟踪的新文件
 
