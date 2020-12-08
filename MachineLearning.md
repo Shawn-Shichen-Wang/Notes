@@ -158,6 +158,7 @@ accuracy_score(pred, labels_test)
 - 核技巧(KERNEL TRICK)
 
   > 一个函数，接收低维度的输入空间或特征空间，将其映射到高维度空间 
+
   - 将过去不可线性分割(NOT LINEAR SEPARABLE)的内容变为可分割
   - kernels 核函数，实现非线性分割线对数据集进行分类
 
@@ -227,5 +228,40 @@ clf.predict(X_test)
 
 ## random forest
 
+[DOCUMENT](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html)
+
+```Python
+from sklearn.ensemble import RandomForestClassifier
+
+clf = RandomForestClassifier(max_depth=2, random_state=0)
+
+clf.fit(X, y)
+
+clf.predict(X_test)
+```
+
+- Parameters
+  - **n_estimators** 森林中树木的数量，default = 100
+  - max_depth 最大深度，default=无
+  - Min_samples_split，最小分割样本，与D.T.中的一样，default = 2
+
 ## adaboost
+
+[AdaBoost介绍](https://medium.com/@houyitong/adaboost%E4%BB%8B%E7%B4%B9-%E4%B8%8A-%E6%BC%94%E7%AE%97%E6%B3%95%E4%BB%8B%E7%B4%B9-894fe049ad76)
+
+```Python
+from sklearn.ensemble import AdaBoostClassifier
+clf = AdaBoostClassifier()
+
+clf.fit(X_train, y_train)
+
+clf.score(X_test, y_test)
+```
+
+- Parameters
+  - **n_estimators** 增强估计器的最大数量 default = 50
+  - **learning_rate** default = 1
+  - **algorithm** 可选'SAMME' / 'SAMME.R'
+
+## 更大的数据量要比精密调整的算法提供更好的结果
 
