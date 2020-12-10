@@ -265,3 +265,22 @@ clf.score(X_test, y_test)
 
 ## 更大的数据量要比精密调整的算法提供更好的结果
 
+## 特征工程与特征选择
+
+- 特征选择
+  - 选择应该在模型中使用的解释变量
+    - 与系数的显著水平
+    - VIF
+    - 交叉验证
+    - 正则化
+
+- 特征工程
+  - 使用缺失值增加或者删除行
+  - 利用初始特征的不同比例创建新的一列
+  - 将文本和图片转化为数字
+  - 创建虚拟变量
+
+- 特征工程的 Sklearn 文献，请点 [这里](http://scikit-learn.org/stable/modules/preprocessing.html)，有关在 pandas 里处理缺失值的其它文献，请点 [这里](https://pandas.pydata.org/pandas-docs/stable/missing_data.html)。
+
+
+
