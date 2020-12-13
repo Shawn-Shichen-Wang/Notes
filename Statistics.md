@@ -665,7 +665,7 @@ $$
    vif = pd.DataFrame()
    vif["features"] = X.columns
    vif["VIF Factor"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
-vif.round(1)
+   vif.round(1)
    ```
    
      - [VIFs](https://etav.github.io/python/vif_factor_python.html) 相关网站以供参考。
