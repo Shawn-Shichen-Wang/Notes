@@ -508,7 +508,7 @@ $$
 
     $b_0 =\bar{y} - b_1\bar{x}$
 
-- [[Python回归]]
+### [[Python回归]]
 
   ```Python
   # pip install statsmodels
@@ -523,25 +523,25 @@ $$
   [这里](https://stats.stackexchange.com/questions/7948/when-is-it-ok-to-remove-the-intercept-in-a-linear-regression-model) 是一个帖子，里面谈到几乎所有回归都需要截距。重申一次，只有极少数情况不需要在线性模型里使用截距。
 
   - 我们可以用 Python (或其它软件) 来对线性模型的系数进行假设检验。这些测试能帮我们判断某个变量与其反应变量是否具有具统计显著性的线性关系，不过对截距进行假设检验通常没什么作用。
-
+  
     然而，对每个 x 变量进行假设检验，测试所涉及的两组为：总体斜率等于 0 vs. 参数不等于 0 的其它情况（对立假设）。因此，如果斜率不等于 0 (即对立假设为真)，那我们就能证明与那个系数有关的 x 变量与反应变量间有具统计显著性的线性关系，也就意味着 x 变量能帮我们预测反应变量 (或者，最起码意味着模型里有 x 变量比没有好)。
-
+  
   - **决定系数** 即相关系数的平方。
-
+  
     决定系数变量通常定义为模型中能以 x 变量解释的反应变量的变化范围。通常来说，决定系数越接近 1，模型就越拟合数据。
-
+  
     很多人觉得决定系数不是个很好的衡量标准 (他们可能是对的)，不过我想说，我们所使用的任何衡量模型数据拟合度的方法，都可借助交叉验证来判断其准确性。[这里](http://data.library.virginia.edu/is-r-squared-useless/) 是一位朋友的文章，里面就用交叉验证探讨了他觉得决定系数不好的原因。
-
-  - 编码虚拟变量
-
+  
+  - 编码[[虚拟变量]]
+  
     - 把分类变量转变为 **虚拟变量**。
-
+    
     - 转化后，你需要舍弃一个 **虚拟列**，才能得到 [满秩](https://www.cds.caltech.edu/~murray/amwiki/index.php/FAQ:_What_does_it_mean_for_a_non-square_matrix_to_be_full_rank%3F) 矩阵。
-
+    
       - 回归系数闭式解，得用 $(X'X)^-X'y$来预测 $\beta$值。
     
         为了逆转 $(X'X)$，矩阵 $X$ 一定要是满秩的，也就是说，所有 $X$ 的列都必须线性独立。
-
+    
     - ```Python
       df[['A', 'B', 'C']] = pd.get_dummies(df[分类变量]) # 0, 1编码
       ```
@@ -711,3 +711,49 @@ https://tamino.wordpress.com/2011/03/31/so-what/
 ### K折交叉验证
 
 - 见MachineLearning.md
+
+## 逻辑回归
+
+- 正确预测两个可能结果中的一个
+  
+  - 预测范围在0和1之间的概率
+- 优势率 Odds
+  - $\frac p {1-p}$
+  - p是某个事件发生的概率，Odds表示某个事件发生相比于事件不会发生的概率
+- sigmoid
+  
+  - 通过线性回归得到概率值并且控制在[0, 1]
+- [[Python逻辑回归]]
+
+  ```Python
+  import statsmodels.api as sm
+  df[['no_fraud', 'fraud']] = pd.get_dummies(df['fraud'])
+  df['intercept'] = 1
+
+  logit_mod = sm.Logit(df['fraud'], df[['intercept', 'duration']])
+  results = logit_mod.fit()
+  results.summary2() 
+  ```
+  - ![image-20201213170855387](Statistics.assets/image-20201213170855387.png)
+  
+    - p值表示是否具有统计显著性
+  
+    - 系数为指数化系数
+  
+      - 对每个系数求幂
+  
+      - np.exp(-1.4637), np.exp(2.5465)
+  
+        > (0.231, 12.762)
+  
+    - 分别表示
+  
+      - 交易时常每增加1分钟诈骗概率增加0.23倍
+  
+        - 对其求倒数`1/np.exp(-1.4637)`
+  
+          - > 4.32
+  
+        - 表示交易时常每减少1分钟诈骗概率增加4.32倍
+  
+      - 工作日诈骗概率是周末12.762倍
