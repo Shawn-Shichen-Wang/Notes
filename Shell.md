@@ -95,3 +95,36 @@
 - `alias ll='ls -la'` 别名
 
   - alias 查看所有别名
+
+- SCP
+
+  1、从服务器上下载文件
+
+    ```ruby
+  scp username@remote_ip:remote_file local_folder
+    ```
+
+  2、上传本地文件到服务器
+
+    ```ruby
+  scp local_file username@remote_ip:remote_folder   
+    ```
+
+  3、从服务器下载整个目录
+
+    ```ruby
+  scp -r username@remote_ip:remote_folder local_foldder
+    ```
+
+  4、上传目录到服务器
+
+    ```ruby
+  scp  -r local_folder username@remote_ip:remote_folder
+    ```
+  ```css
+  1.-v 显示进度
+  2.-r 递归处理
+  3.-C 压缩选项
+  4.-P 选择端口
+  ```
+
