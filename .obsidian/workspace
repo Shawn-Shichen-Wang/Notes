@@ -10,7 +10,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Git提交样式指南.md",
+            "file": "VersionControl.md",
             "mode": "source"
           }
         }
@@ -69,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Git提交样式指南.md",
+                "file": "VersionControl.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -85,6 +85,9 @@
     "width": 300
   },
   "lastOpenFiles": [
+    "VersionControl.md",
+    "Statistics.md",
+    "SQL_add.md",
     "Git提交样式指南.md",
     "Git_hub.md",
     "机器学习_Udacity.md"

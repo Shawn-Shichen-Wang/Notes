@@ -4,6 +4,8 @@
 
 ## 实体关系图ERD
 
+[来源](https://mode.com/) (parch_and_posey)
+
 ![img](SQL.assets/screen-shot-2017-08-02-at-11.14.25-am.png)
 
 - 可以通过 ["crow's foot" 表示法](http://www.vertabelo.com/blog/technical-articles/crow-s-foot-notation)来标记出一个表格里的列与另一个表格的列之间的关联，比如 region 表格里的 `id` 对应 sales_rep 表格里 `region_id`。
@@ -23,11 +25,11 @@
 
 - One-to-one
 
-  ![One-to-one](https://www.vertabelo.com/blog/crow-s-foot-notation/crows-foot-notation-one-to-one.png)
+  ![img](SQL_add.assets/crows-foot-notation-one-to-one.png)
 
 - One-to-many
 
-  ![One-to-many](https://www.vertabelo.com/blog/crow-s-foot-notation/crows-foot-notation-one-to-many.png)
+  ![img](SQL_add.assets/crows-foot-notation-one-to-many.png)
 
 - Many-to-many
 
@@ -224,7 +226,7 @@ JOIN tablename2 AS t2
 
 ### GROUP BY
 
-- **GROUP BY** 可以用来在数据子集中聚合数据。例如，不同客户、不同区域或不同销售代表分组。
+- **GROUP BY** 可以用来在数据子集中聚合数据，多个条件用`,`分隔
 - **SELECT** 语句中的任何一列如果不在聚合函数中，则必须在 **GROUP BY** 条件中。即必须都是***折叠（collapse）***后的数据
 - **GROUP BY** 始终在 **WHERE** 和 **ORDER BY** 之间。
 - **ORDER BY** 有点像电子表格软件中的 **SORT**。
@@ -233,3 +235,18 @@ JOIN tablename2 AS t2
 
 - **仅返回特定列的唯一值**的函数。
 - 在使用 **DISTINCT** 时，尤其是在聚合函数中使用时，会让查询速度有所减慢。
+
+### HAVING
+
+- 对聚合结果进行筛选
+  - 想对通过聚合创建的查询中的元素执行 **WHERE** 条件，就需要使用 **HAVING**。
+- 位置在**GROUP BY**之后
+  - **WHERE**在**GROUP BY**之前
+- **HAVING** 是过滤被聚合的查询的 “整洁”方式，但是通常采用**子查询**的方式来实现
+
+## DATE函数
+
+- **DATE_TRUNC**
+- **DATE_PART**
+- 
+
