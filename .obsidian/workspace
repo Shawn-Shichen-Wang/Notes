@@ -1,0 +1,95 @@
+{
+  "main": {
+    "id": "f218ab5a2cd5f365",
+    "type": "split",
+    "children": [
+      {
+        "id": "5a08ed3f95963dac",
+        "type": "leaf",
+        "active": true,
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "Statistics.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "7f0f2c343e5e6bbf",
+    "type": "split",
+    "children": [
+      {
+        "id": "bd152ce4a5e6b062",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a082f9913b0711c3",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "b2faa160feb16f93",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "7b61fb147cbf653e",
+    "type": "split",
+    "children": [
+      {
+        "id": "479866006b2e109b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d3d2f6dec2316721",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Statistics.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "lastOpenFiles": [
+    "Statistics.md",
+    "VersionControl.md",
+    "SQL_add.md",
+    "Git提交样式指南.md",
+    "Git_hub.md",
+    "机器学习_Udacity.md"
+  ]
+}
