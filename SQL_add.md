@@ -287,15 +287,151 @@ SELECT CASE WHEN investments.investor_name IS NULL THEN 'No Investors'
   LIMIT 10;
   ```
 
-- 分类结果str要加`''`
-  
-  - 别名不加
 
 ***熟能生巧，不过太长时间都陷在某个问题上也不太合适！***
 
 ## 子查询
 
 - 必须设置别名 
+  - 跟在HAVING, WHERE后边的加括号不设置别名
 - 数据库将子查询视为独立查询
-- 
+- 外部查询按照外部查询的级别缩进
+  - 内部查询按内部查询的级别缩进
+- 如果我们返回了整个列，则需要使用 **IN** 来执行逻辑参数。如果我们要返回整个表格，则必须为该表格使用**别名**，并对整个表格执行其他逻辑。
+
+```SQL
+SELECT SUM(total_amt_usd)
+FROM orders
+WHERE DATE_TRUNC('month', occurred_at) =
+(SELECT DATE_TRUNC('month', MIN(occurred_at)) FROM orders);
+```
+
+## WITH
+
+- **WITH** 语句经常称为**公用表表达式**（简称 **CTE**[^CTE]）
+
+  - [^CTE]:Common Table Expressions
+
+- 在使用 **WITH** 创建多个表格时，需要在每个表格后面加一个逗号，但是在引向最终查询的最后一个表格后面不需添加。
+
+- 后边的WITH语句可以使用前边WITH语句创建的临时表格
+
+- SELECT语句中的HAVING或WHERE后加WITH语句中的表格，需要使用`SELECE * FROM xxx`
+
+```SQL
+WITH t1 AS (
+SELECT r.name region_name, SUM(o.total_amt_usd) total_amt
+FROM sales_reps s
+JOIN accounts a
+ON a.sales_rep_id = s.id
+JOIN orders o
+ON o.account_id = a.id
+JOIN region r
+ON r.id = s.region_id
+GROUP BY r.name),
+
+t2 AS (
+SELECT MAX(total_amt)
+FROM t1)
+
+SELECT r.name, SUM(o.total) total_orders
+FROM sales_reps s
+JOIN accounts a
+ON a.sales_rep_id = s.id
+JOIN orders o
+ON o.account_id = a.id
+JOIN region r
+ON r.id = s.region_id
+GROUP BY r.name
+HAVING SUM(o.total_amt_usd) = (SELECT * FROM t2);
+```
+
+## SQL数据清洗
+
+### LEFT 
+
+**LEFT(phone_number, 3)** 获取电话号码中的前三位。
+
+**RIGHT(phone_number, 8)** 获取电话号码的最后 8 位。
+
+### LENGTH
+
+**LENGTH** 提供了特定列每行的字符数。
+
+**LENGTH(phone_number)** 电话号码的长度
+
+### UPPER()
+
+LOWER() 转换大小写
+
+### **POSITION** 
+
+获取字符和列，并提供该字符在每行的索引。第一个位置的索引在 SQL 中是 1。如果你之前学习了其他编程语言，就会发现很多语言的索引是从 0 开始。
+
+**POSITION(',' IN city_state)** 获取逗号的索引。
+
+**STRPOS(city_state, ‘,’)** 作用与POSITION一样，参数位置交换
+
+区分大小写
+
+### CONCAT
+
+拼接
+
+- **CONCAT(first_name, ' ', last_name)**
+- 或者使用双竖线：**first_name || ' ' || last_name**。
+
+### REPLACE
+
+> replace( 'abcdefabcdef', 'cd', 'XX')
+>
+> abXXefabXXef
+
+### CAST
+
+- TO_DATE(month, 'month')
+  
+- **DATE_PART('month', TO_DATE(month, 'month'))** 将月份名称改成了与该月相关的数字。
+  
+- **CAST(date_column AS DATE)** 将`字符串`改成`日期`
+  - 在[此处](http://www.postgresqltutorial.com/postgresql-cast/)看到其他例子
+
+  - **date_column::DATE**
+
+### TRIM
+用来删掉字符串开头和末尾的字符，这样就可以删掉一行开头或末尾的空格，从 Excel 或其他存储系统转移过来的数据经常就需要这么处理。
+
+`trim([leading | trailing | both] [characters] from string)`
+
+> trim(both 'x' from 'xTomxx')
+>
+> Tom
+
+### SUBSTR
+
+`substr`(`string`, `from` [, `count`])
+
+>substr('alphabet', 3, 2)
+>
+>ph
+
+### **COALESCE**
+
+返回每行的第一个非 NULL 值
+
+`COALESCE(descript, 'No Description')` 空值替换
+
+在[此处](https://academy.vertabelo.com/blog/5-functions-manipulating-sql-strings/)详细了解这些函数。你还可以在[此处](https://community.modeanalytics.com/sql/tutorial/sql-string-functions-for-cleaning/)查看这节课介绍的很多函数。
+
+### 其他
+
+[ProgreSQL Functions](https://www.postgresql.org/docs/8.1/functions-string.html)
+
+**LEFT**、**RIGHT** 和 **TRIM** 都仅用来选择特定的字符串元素，但是使用它们选择数字或日期元素，系统会将它们处理为字符串。
+
+每一部分按照所学的函数设定标签，便于你复习这些数据清理功能。如果你一开始不习惯使用任何一个函数，这是正常现象，需要练习一段时间才能适应。你完全可以再看一遍这些材料，进一步磨练你的技能！
+
+不需要记住这些功能，但是你需要学会查看文档，并从所执行的查询中学习经验，从而能够解决新的问题。
+
+终于学完了这一部分，你很棒！
 
