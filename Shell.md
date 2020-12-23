@@ -92,6 +92,9 @@
 
   - Mac
   
+    - `cd ~`
+    - `ls -a`
+  
 - `alias ll='ls -la'` 别名
 
   - alias 查看所有别名
