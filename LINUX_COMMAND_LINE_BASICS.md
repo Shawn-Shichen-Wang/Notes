@@ -25,5 +25,3 @@
 ## Some Common Commons
 
 `Ctrl+R` 搜索使用过的命令
-
-test
