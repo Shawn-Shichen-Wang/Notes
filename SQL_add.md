@@ -435,3 +435,11 @@ LOWER() 转换大小写
 
 终于学完了这一部分，你很棒！
 
+## [WindowsFunctions]( https://mode.com/sql-tutorial/sql-window-functions/)
+
+## [Performance Tuning SQL Queries](https://mode.com/sql-tutorial/sql-performance-tuning/)
+
+[Pivoting Data in SQL](https://mode.com/sql-tutorial/sql-pivot-table/)
+
+[About Analytics Training](https://mode.com/sql-tutorial/sql-business-analytics-training/)
+
