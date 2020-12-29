@@ -178,7 +178,7 @@ git clone https://github.com/udacity/course-git-blog-project
 
 - `git commit -m "Initial commit"` 当信息很短不想打开Atom编辑提交信息时使用`-m`
 - [Commit message 和 Change log 编写指南](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
-- [git 提交样式指南](/Users/season/Google Drive/Udacity_2.0/笔记/Git提交样式指南.md)
+- [git 提交样式指南](./Git提交样式指南.md)
   - 七条准则
     - 用空行分开主题和正文
     - 限制主题在50个字母
