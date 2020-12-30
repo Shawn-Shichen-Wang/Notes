@@ -25,11 +25,11 @@
 
 - One-to-one
 
-  ![img](SQL_add.assets/crows-foot-notation-one-to-one.png)
+  ![img](SQL.assets/crows-foot-notation-one-to-one.png)
 
 - One-to-many
 
-  ![img](SQL_add.assets/crows-foot-notation-one-to-many.png)
+  ![img](SQL.assets/crows-foot-notation-one-to-many.png)
 
 - Many-to-many
 
@@ -638,7 +638,7 @@ SELECT teams.conference,
 ### EXPLAIN
 
 - Add `EXPLAIN` at the beginning of any (working) query to get a sense of how long it will take. It's not perfectly accurate, but it's a useful tool.
-- ![Explain Output](SQL_add.assets/explain.png)
+- ![Explain Output]( SQL.assets/explain.png)
   - cost越高运行时间越长
   - 修改cost高的步骤然后EXPLAIN看成本是否降低
 - [更多信息](https://www.postgresql.org/docs/9.0/sql-explain.html)
