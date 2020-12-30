@@ -437,9 +437,212 @@ LOWER() 转换大小写
 
 ## [WindowsFunctions]( https://mode.com/sql-tutorial/sql-window-functions/)
 
+### Intro
+
+> A *window function* performs a calculation across a set of table rows that are somehow related to the current row. This is comparable to the type of calculation that can be done with an aggregate function. But unlike regular aggregate functions, use of a window function does not cause rows to become grouped into a single output row — the rows retain their separate identities. Behind the scenes, the window function is able to access more than just the current row of the query result.
+
+- 在符合条件的行中进行聚合运算
+- 类似分组，但不会像分组一样只能返回一个聚合值
+- 在常规聚合函数之后执行
+- 只能在SELECT语句和ORDER BY语句中使用
+  
+  - 不能在GROUP BY, HAVING, WHERE语句中使用
+- 如果在窗口计算之后需要进行过滤或分组，使用子查询
+
+- 多个窗口函数时设置别名
+
+  > ```SQL
+  > SELECT sum(salary) OVER w, avg(salary) OVER w
+  >   FROM empsalary
+  >   WINDOW w AS (PARTITION BY depname ORDER BY salary DESC);
+  > ```
+
+### 🌰
+
+计算每个部门的人员的平均薪资
+
+```SQL
+SELECT depname, empno, salary, avg(salary) OVER (PARTITION BY depname) FROM empsalary;
+```
+
+```sql
+  depname  | empno | salary |          avg          
+-----------+-------+--------+-----------------------
+ develop   |    11 |   5200 | 5020.0000000000000000
+ develop   |     7 |   4200 | 5020.0000000000000000
+ develop   |     9 |   4500 | 5020.0000000000000000
+ develop   |     8 |   6000 | 5020.0000000000000000
+ develop   |    10 |   5200 | 5020.0000000000000000
+ personnel |     5 |   3500 | 3700.0000000000000000
+ personnel |     2 |   3900 | 3700.0000000000000000
+ sales     |     3 |   4800 | 4866.6666666666666667
+ sales     |     1 |   5000 | 4866.6666666666666667
+ sales     |     4 |   4800 | 4866.6666666666666667
+(10 rows)
+```
+
+### SUM, COUNT, and AVG
+
+```SQL
+SELECT start_terminal,
+       duration_seconds,
+       SUM(duration_seconds) OVER
+         (PARTITION BY start_terminal ORDER BY start_time)
+         AS running_total,
+       COUNT(duration_seconds) OVER
+         (PARTITION BY start_terminal ORDER BY start_time)
+         AS running_count,
+       AVG(duration_seconds) OVER
+         (PARTITION BY start_terminal ORDER BY start_time)
+         AS running_avg
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+```
+
+### ROW_NUMBER()
+
+- Display the number of a given row. It starts are 1 and numbers the rows according to the `ORDER BY` part of the window statement.
+- Using the `PARTITION BY` clause will allow you to begin counting 1 again in each partition
+
+```SQL
+SELECT start_terminal,
+       start_time,
+       duration_seconds,
+       ROW_NUMBER() OVER (PARTITION BY start_terminal
+                          ORDER BY start_time)
+                    AS row_number
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+```
+
+### RANK() and DENSE_RANK()
+
+- RANK() 与ROW_NUMBER() 区别在于相同值处理上
+  - ROW_NUMBER() 从1开始依次加1，不会有相同的结果, 如1, 2, 3
+  - RANK() 遇到相同的值会给相同的RANK, 如1, 1, 3
+- DENSE_RANK()与RANK() 区别在于DENSE_RANK() 不会跳过，如1, 1, 2
+
+### NTILE
+
+- Identify what percentile (or quartile, or any other subdivision) a given row falls into.
+- The syntax is `NTILE(*# of buckets*)`
+- ORDER BY 决定使用哪一列来确定分位数
+- 当数据量n小于使用的参数时会出错，这时应考虑使用更小的参数
+
+```SQL
+SELECT start_terminal,
+       duration_seconds,
+       NTILE(4) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+          AS quartile,
+       NTILE(5) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+         AS quintile,
+       NTILE(100) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+         AS percentile
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+ ORDER BY start_terminal, duration_seconds
+```
+
+- 设置别名
+
+```SQL
+SELECT start_terminal,
+       duration_seconds,
+       NTILE(4) OVER ntile_window AS quartile,
+       NTILE(5) OVER ntile_window AS quintile,
+       NTILE(100) OVER ntile_window AS percentile
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+WINDOW ntile_window AS
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+ ORDER BY start_terminal, duration_seconds
+```
+
+
+
+### LEAD and LAG
+
+- 取前(后)[n]行的值
+
+  ```SQL
+  LAG(duration_seconds, 1) OVER
+           (PARTITION BY start_terminal ORDER BY duration_seconds) AS lag
+  ```
+
+- 使用子查询删除产生的NULL
+
+  ```SQL
+  SELECT *
+    FROM (
+      SELECT start_terminal,
+             duration_seconds,
+             duration_seconds -LAG(duration_seconds, 1) OVER
+               (PARTITION BY start_terminal ORDER BY duration_seconds)
+               AS difference
+        FROM tutorial.dc_bikeshare_q1_2012
+       WHERE start_time < '2012-01-08'
+       ORDER BY start_terminal, duration_seconds
+         ) sub
+   WHERE sub.difference IS NOT NULL
+  ```
+
+### 其他函数
+
+[PostgreSQL_Doc](https://www.postgresql.org/docs/8.4/functions-window.html)
+
 ## [Performance Tuning SQL Queries](https://mode.com/sql-tutorial/sql-performance-tuning/)
+
+### Intro
+
+[查询运行时背后的理论](https://mode.com/sql-tutorial/sql-performance-tuning/#the-theory-behind-query-run-time)
+
+数据库是在计算机上运行的软件，并且与所有软件一样受到相同的限制-数据库只能处理其硬件能够处理的信息。使查询运行更快的方法是减少软件（以及因此硬件）必须执行的计算数量。为此，您需要对SQL实际进行计算的方式有所了解。首先，让我们解决一些会影响您需要进行的计算数量以及查询运行时间的高级事情：
+
+- **表大小：**如果查询命中具有百万行或更多行的一个或多个表，则可能会影响性能。
+- **联接：**如果您的查询以显着增加结果集的行数的方式联接两个表，则您的查询可能会变慢。[子查询课程中](https://mode.com/sql-tutorial/sql-sub-queries#joining-subqueries)有一个示例。
+- **聚合：**合并多个行以产生一个结果需要比简单地检索那些行更多的计算。
+
+查询运行时还取决于您无法真正控制的与数据库本身相关的某些事情：
+
+- **其他正在运行查询的用户：**在数据库上并发**运行的查询**越多，数据库在给定时间必须处理的次数就越多，一切运行的速度就越慢。如果其他人正在运行满足上述某些条件的资源特别密集的查询，则可能会特别糟糕。
+- **数据库软件和优化：**这可能是您无法控制的，但是如果您知道所使用的系统，则可以在其范围内工作以提高查询效率。
+
+### Reducing table size
+
+- WHERE 筛选数据以仅包含所需的观察值可以大大提高查询速度。您如何执行此操作完全取决于您要解决的问题。例如，如果您有时间序列数据，则将时间窗口限制在一个较小的时间范围内可使查询运行得更快
+- LIMIT 请记住，您始终可以对一部分数据执行探索性分析，将工作细化为最终查询，然后消除限制并在整个数据集中运行您的工作。最终查询可能需要很长时间才能运行，但是至少您可以快速运行中间步骤。
+  - 但是对于聚合没有帮助，因为会先执行聚合然后LIMIT
+  - 可以在子查询中LIMIT然后进行聚合
+  - **注意**：使用`LIMIT`此选项将极大地改变您的结果，因此您应该使用它来测试查询逻辑，但不要获取实际结果。
+
+### Making joins less complicated
+
+在JOIN之前执行聚合，减少运算量
+
+```SQL
+SELECT teams.conference,
+       sub.*
+  FROM (
+        SELECT players.school_name,
+               COUNT(*) AS players
+          FROM benn.college_football_players players
+         GROUP BY 1
+       ) sub
+  JOIN benn.college_football_teams teams
+  ON teams.school_name = sub.school_name
+```
+
+### EXPLAIN
+
+- Add `EXPLAIN` at the beginning of any (working) query to get a sense of how long it will take. It's not perfectly accurate, but it's a useful tool.
+- ![Explain Output](SQL_add.assets/explain.png)
+  - cost越高运行时间越长
+  - 修改cost高的步骤然后EXPLAIN看成本是否降低
+- [更多信息](https://www.postgresql.org/docs/9.0/sql-explain.html)
 
 [Pivoting Data in SQL](https://mode.com/sql-tutorial/sql-pivot-table/)
 
 [About Analytics Training](https://mode.com/sql-tutorial/sql-business-analytics-training/)
-
