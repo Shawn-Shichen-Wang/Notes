@@ -166,6 +166,15 @@
 3. 使用密匙登陆
 
    `ssh [name]@[ip address] -p [port] -i ~/.ssh/[name of key]`
+   
+4. Forcing Key Based Authentication
+
+   - `sudo nano /etc/ssh/sshd_config`
+   - `PasswordAuthentication no`, 保存
+   - `sudo service ssh restart`
+   - SSHD 是运行在服务器上监听所有SSH连接的服务
+
+   
 
 ## Public Key Encryption
 
