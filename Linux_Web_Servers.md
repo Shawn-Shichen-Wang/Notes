@@ -36,6 +36,8 @@
 - [AskUbuntu: How to Update $PATH](http://askubuntu.com/questions/60218/how-to-add-a-directory-to-my-path)
 - [Linux环境变量设置](https://www.jianshu.com/p/38d6ae3f911b)
 
+---
+
 # Security
 
 ## **最重要的安全性规则**
@@ -243,6 +245,7 @@
   - 启用后SSH断了的话说明搞砸了
   - 某些云服务提供商，通过终端控制面板提供重新获取系统访问权限的办法；但大多数人没这么幸运:sob:
   - 所以建议在服务器设置流程的早期就配置防火墙
+- [DigitalOcean文档](https://www.digitalocean.com/community/tutorials/how-to-setup-a-firewall-with-ufw-on-an-ubuntu-and-debian-cloud-server)
 
 ## 服务器配置练习
 
@@ -253,4 +256,22 @@ Here are a few tutorials that will walk you through how to configure your server
 - [PEPS Mail and File Storage](https://www.digitalocean.com/community/tutorials/how-to-run-your-own-mail-server-and-file-storage-with-peps-on-ubuntu-14-04)
 - [Mail-in-a-Box Email Server](https://www.digitalocean.com/community/tutorials/how-to-run-your-own-mail-server-with-mail-in-a-box-on-ubuntu-14-04)
 - [Lita IRC Chat Bot](https://www.digitalocean.com/community/tutorials/how-to-install-the-lita-chat-bot-for-irc-on-ubuntu-14-04)
+
+---
+
+# Initial Server Setup With Debian9
+
+[DigitaloceanDoc](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-debian-9)
+
+# Web Application Servers
+
+1. [Install_apache](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-debian-9)
+
+   `sudo apt install apache2`
+
+   `sudo ufw allow 'WWW'`
+
+2. Install mod_wsgi
+
+3. Install PostgreSQL
 
