@@ -184,3 +184,72 @@
 2. 本地计算机使用私有密匙将==加密后的信息==回复给远程服务器
 3. 远程服务器使用公共密匙解密收到的信息，如果==解密后的值==与发送的值相等，验证通过
 
+## File Permissions
+
+### `ls -al` 
+
+- 首位`d`代表是一个目录, `-`代表是文件
+- `root staff` 代表staff组的root用户(owner)
+
+### rwx
+
+![image-20210102161659512](Linux_Web_Servers.assets/image-20210102161659512.png)
+
+- r: read
+  - r = 4
+- w: write
+  - w = 2
+- x: execute 执行 如果是`-`表示无执行权限
+  - x = 1
+
+### change
+
+- `sudo chmod 644 [file]`
+  - 更改文件权限
+- `sudo chgrp [group] [file]`
+  - 更改组权限
+- `sudo chown [own] [file]`
+  - 更改用户权限
+
+## Ports
+
+- 对于每个请求类型，服务器通过端口得知对应哪个应用程序
+  - 每个应用程序都配置 为响应针对指定端口的请求
+- 使用防火墙控制服务器允许哪个端口接受请求
+- 常用端口
+  - HTTP: 80
+  - HTTPS: 443
+  - SSH: 22
+  - FTP: 21
+  - POP3: 110
+  - SMTP: 25
+
+## UFW
+
+- Ubuntu预装了名为`ufw`的防火墙
+- `sudo ufw status`
+  - 查看ufw状态
+- `sudo ufw default deny incoming`
+  - 阻止所有传入请求，然后仅允许需要的请求
+- `sudo ufw default allow outgoing`
+  - 为服务器向互联网发出的任何请求建立默认规则
+
+- Configuring Ports in UFW
+  - `sudo ufw allow ssh`
+  - `sudo allow 2222/tcp`
+  - `sudo ufw allow www` HTTP server
+- `sudo ufw enable` 启用防火墙
+  - 启用后SSH断了的话说明搞砸了
+  - 某些云服务提供商，通过终端控制面板提供重新获取系统访问权限的办法；但大多数人没这么幸运:sob:
+  - 所以建议在服务器设置流程的早期就配置防火墙
+
+## 服务器配置练习
+
+Here are a few tutorials that will walk you through how to configure your server in a variety of use cases:
+
+- ["LAMP" Stack (Linux, Apache, MySQL, PHP)](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-14-04)
+- ["LEMP" Stack (Linux, nginx, MySQL, PHP)](https://www.digitalocean.com/community/tutorials/how-to-install-linux-nginx-mysql-php-lemp-stack-on-ubuntu-14-04)
+- [PEPS Mail and File Storage](https://www.digitalocean.com/community/tutorials/how-to-run-your-own-mail-server-and-file-storage-with-peps-on-ubuntu-14-04)
+- [Mail-in-a-Box Email Server](https://www.digitalocean.com/community/tutorials/how-to-run-your-own-mail-server-with-mail-in-a-box-on-ubuntu-14-04)
+- [Lita IRC Chat Bot](https://www.digitalocean.com/community/tutorials/how-to-install-the-lita-chat-bot-for-irc-on-ubuntu-14-04)
+
