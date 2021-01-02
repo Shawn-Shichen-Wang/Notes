@@ -223,6 +223,7 @@
   - FTP: 21
   - POP3: 110
   - SMTP: 25
+- [TCP/UDP端口列表](https://zh.wikipedia.org/wiki/TCP/UDP%E7%AB%AF%E5%8F%A3%E5%88%97%E8%A1%A8)
 
 ## UFW
 
