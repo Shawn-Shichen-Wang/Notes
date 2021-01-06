@@ -381,8 +381,9 @@ $H_1:\mu_{new} > \mu_{old}$
 1. 测试总体平均数 [(单样本 t 检验)](https://www.cliffsnotes.com/study-guides/statistics/univariate-inferential-tests/one-sample-t-test)。
 2. 测试均数差 [(双样本 t 检验)](http://www.itl.nist.gov/div898/handbook/eda/section3/eda353.htm)
 3. 测试个体治疗前后的差异 [(配对 t 检验)](http://www.statstutor.ac.uk/resources/uploaded/paired-t-test.pdf)
-4. 测试总体比例 [(单样本 z 检验)](https://stattrek.com/statistics/dictionary.aspx?definition=one-sample z-test)
+4. 测试总体比例 [(单样本 z 检验)](https://stattrek.com/statistics/dictionary.aspx?definition=one-sample%20z-test)
 5. 测试总体比例的差异 [(双样本 z 检验)](https://onlinecourses.science.psu.edu/stat414/node/268)
+6. F检验，检验是否相关
 
 **这有几百个不同的假设检验！** 不过，你不是记忆如何完成所有这些检验，而是找到最佳估算参数的统计量，然后使用自助法模拟抽样分布。然后你可以利用抽样分布，帮助选择合适的假设检验。
 
