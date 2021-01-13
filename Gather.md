@@ -235,12 +235,46 @@ MediaWiki 的网站上有一个很好的 [tutorial](https://www.mediawiki.org/wi
 - 动作
 - 特定动作的参数
 
+### JSON文件结构
+
+JSON( Javascript Object Notation)
+
+XML( eXtensible Markup Language)
+
+- JSON对于展现和读取具有复杂结构的数据特别有用
+- JSON对象
+  - `{"Directed by": "Steven", "Release": [{"Data": "May 26, 1982", "Location": "Cannes"}, {"Data": "June 11, 1982", "Location": "United States"]}`
+- JSON数组，如上述"Release"
+
+### Python中的JSON
+
+1. JSON对象 被解释为字典
+2. JSON数组 被解释为列表
+
 ### wptools 库
 
 MediaWiki 有一堆不同的访问库，可以满足当前的各种编程语言。这是 Python 的 [列表](https://www.mediawiki.org/wiki/API:Client_code#Python)。这对于大多数 API 都比较标准。一些库比其他库更好一点，但也是标准的。对于 MediaWiki，Python 中最新和可读的库是 [wptools](https://github.com/siznax/wptools)。Twitter 的类似关系是：
 
 - MediaWiki API → wptools
 - Twitter API → tweepy
+
+#### Mac中国大陆访问
+
+```bash
+Step.1 
+atom ~/.bash_profile
+
+Step.2
+# 设置HTTP/HTTPS Proxy
+# 7890是ClashX默认HTTP端口 
+export http_proxy="http://127.0.0.1:7890"; 
+export https_proxy="http://127.0.0.1:7890";
+
+Step.3
+source .bash_profile
+```
+
+#### 下载图像文件
 
 ```Python
 import wptools
@@ -253,16 +287,26 @@ page.data
 page.data['image']
 ```
 
-### JSON文件结构
+> lang='zh'存在BUG，mediawiki API介绍可以写zh-cn, zh-tw，但是wptools只有设置zh才能正确获取信息，获取的信息语言取决于原始提交者所用的是繁体还是简体
 
-JSON( Javascript Object Notation)
+```Python
+# 常规下载方法
+import requests
+r = requests.get(url)
+with open(folder_name + '/' + filename, 'wb') as f:
+    f.write(r.content)
+```
 
-XML( eXtensible Markup Language)
+- 但是 [requests](http://docs.python-requests.org/en/latest/user/quickstart/#binary-response-content) 库的维护人员推荐使用 [PIL 库](https://pillow.readthedocs.io/)(Pillow 的缩写)和 BytesIO， 它来自于处理非文本文件（例如：图像）请求的 io 库。对于非文本请求，他们建议你访问作为字节的响应正文。
 
-- JSON对于展现和读取具有复杂结构的数据特别有用
-- JSON对象
-  - `{"Directed by": "Steven", "Release": [{"Data": "May 26, 1982", "Location": "Cannes"}, {"Data": "June 11, 1982", "Location": "United States"]}`
-- JSON数组，如上述"Release"
+```Python
+# PIL和BytesIO下载
+import requests
+from PIL import Image
+from io import BytesIO
+r = requests.get(url)
+i = Image.open(BytesIO(r.content))
+```
 
 
 
@@ -270,6 +314,13 @@ XML( eXtensible Markup Language)
 
 - [Udacity - Youtube：Android 开发人员眼中的 JSON](https://www.youtube.com/watch?v=0IOCgHrTJGU)
 - [Mashery：API 数据交换：XML 与 JSON](https://www.tibco.com/blog/2014/01/23/api-data-exchange-xml-vs-json/)
+- [PythonDoc](https://docs.python-guide.org/scenarios/json/)
+- [mediawiki_Language](https://www.mediawiki.org/wiki/API:SetPageLanguage)
+
+## 绘制WordCloud
+
+- [Word clouds (black borders)](https://github.com/udacity/new-dand-advanced-china/raw/master/数据清洗/wordclouds-black.zip)
+- [Word clouds (white borders)](https://github.com/udacity/new-dand-advanced-china/raw/master/数据清洗/wordclouds-white.zip)
 
 ---
 
@@ -376,3 +427,79 @@ XML( eXtensible Markup Language)
 - 如果仍然对字符集和编码之间的区别感到困惑，可以查阅以下文章：
 - [UTF-8 与 Unicode 之间的区别](http://www.polylab.dk/utf8-vs-unicode.html)
 - [更多关于 Python 2 和 3 中 Unicode 的内容](http://lucumr.pocoo.org/2014/1/5/unicode-in-2-and-3/)
+
+---
+
+# 存储数据
+
+1. 本地保存
+   1. 考虑到数据集的大小
+   2. 可能不会共享这些数据集，
+
+所以将其保存到像 CSV 这样的平面文件可能是最好的解决方案。
+
+[`to_csv` DataFrame 方法](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.to_csv.html) 已经足够了，*将文件保存到计算机* 所需要的唯一一个参数是要保存这个文件的文件路径。如果不希望 DataFrame 索引在存储的数据集中显示为列，通常还需要指定 `index=False`。如果你有一个 DataFrame *df*，并想保存到一个没有索引列且名为 *dataset.csv* 的文件中：
+
+```python
+df.to_csv('dataset.csv', index=False)
+```
+
+2. DataBase
+
+## Python 中的关系数据库
+
+### 数据整理和关系数据库
+
+在数据整理过程中，我们建议数据库和 SQL 仅用于收集数据或存储数据。也就是说：
+
+- **连接到数据库并将数据**导入到 pandas DataFrame(或首选编程语言的类似数据结构)中，然后评估和清理这些数据，或
+- **连接到数据库并存储**我们刚刚收集(可能来自数据库)、评估和清理的数据
+
+如果数据量比较大，这些处理工作将特别有用，而且 SQL 和数据库非常适合平面文件。
+
+可以将上述两种情况进一步分为三个主要任务：
+
+- 连接 Python 中的数据库
+- 将 ***pandas DataFrame*** 里的数据储存至你所连接的数据库中，以及
+- 将你所连接的数据库里的数据导入至 ***pandas DataFarme*** 中。
+
+### 本节课
+
+对于这节课中的示例，我们将按顺序操作：
+
+1. 连接到数据库。我们将使用 [SQLAlchemy](https://www.sqlalchemy.org/) 连接到 SQLite 数据库，这是 Python 的数据库工具包。
+2. 将数据存储在数据库中经清理的主数据集中。我们将使用 pandas 的 `to_csv` DataFrame 方法存储数据。
+3. 然后将该数据库中的全新数据读取到 pandas DataFrame 中。我们将使用 pandas 的 `read_csv` 函数来进行这些操作。
+
+这节课不需要进行第三条，但是有时候在工作过程中，会在项目开始时为你提供一个数据库。这就不一定必须得下载文件、抓取网页、点击 API 等。
+
+### 在 SQL 中进行数据整理？
+
+实际上可以在 *SQL*中进行数据整理，但是我们认为 pandas 更适合收集 (pandas 在这方面有很大的优势，而且操作起来简单)、评估和清理数据，所以我们建议你使用 pandas。一般来说，[讨论 pandas 与 SQL 的 Reddit thread](https://www.reddit.com/r/Python/comments/1tqjt4/why_do_you_use_pandas_instead_of_sql/) 还是比较有趣的，还涉及几个与数据整理有关的主题。
+
+# 其他文件格式
+
+你在这节课中掌握的文件类型可用于绝大多数数据整理项目。这些文件类型是：
+
+- 平面文件(例如 CSV 和 TSV)
+- HTML 文件
+- JSON 文件
+- TXT 文件
+- 关系数据库文件
+
+其他常见的文件格式包括：
+
+- [Excel 文件](https://www.lifewire.com/what-is-an-xlsx-file-2622540)
+- [Pickle 文件](https://stackoverflow.com/questions/7501947/understanding-pickling-in-python)
+- [HDF5 文件](https://www.hdfgroup.org/HDF5/whatishdf5.html)
+- [SAS 文件](http://whatis.techtarget.com/fileformat/SAS-SAS-program-file)
+- [STATA 文件](http://faculty.econ.ucdavis.edu/faculty/cameron/stata/stataintro.html)
+
+pandas [可以](http://pandas.pydata.org/pandas-docs/stable/api.html#input-output) 读取(写入大部分)这些文件。此外，你已经基本大致了解了**收集**和文件格式，所以如果需要，学习这些附加格式也不会太吃力。
+
+# 迭代 Iterate
+
+数据整理可以是一个迭代过程
+
+从小数据量开始一步步迭代收集数据 is very OK
+
