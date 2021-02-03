@@ -18,7 +18,7 @@
 
 [通配符](./通配符.md)
 
-[Linux基础](./LINUX_⌘_LINE_BASICS.md)
+[Linux基础](./LINUX_COMMAND_LINE_BASICS.md)
 
 [Linux_Web_Servers](Linux_Web_Servers.md)
 
