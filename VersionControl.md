@@ -100,7 +100,7 @@
 
 ### **.gitignore**
 
-创建一个文件.gitignore，将此文件添加到**项目根目录**。希望 git ignore（忽略，不跟踪）的文件名添加到.gitignore中，git 将忽略这些文件。可使用[通配符](/Users/season/Google Drive/Udacity_2.0/笔记/通配符.md)
+创建一个文件.gitignore，将此文件添加到**项目根目录**。希望 git ignore（忽略，不跟踪）的文件名添加到.gitignore中，git 将忽略这些文件。可使用[通配符](./通配符.md)
 
 ### git init
 
