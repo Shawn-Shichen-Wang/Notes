@@ -463,7 +463,7 @@ df.to_csv('dataset.csv', index=False)
 - 将 ***pandas DataFrame*** 里的数据储存至你所连接的数据库中，以及
 - 将你所连接的数据库里的数据导入至 ***pandas DataFarme*** 中。
 
-### 本节课
+### Python连接数据库
 
 对于这节课中的示例，我们将按顺序操作：
 
