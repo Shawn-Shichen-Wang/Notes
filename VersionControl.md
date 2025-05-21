@@ -54,7 +54,7 @@
 3. 配置Git
 
       1. 设置你的 Git 用户名`git config --global user.name "<Your-Full-Name>"`
-      2. 设置你的 Git 邮箱`git config --global user.email "<your-email-address>"`
+      2. 设置你的 Git 邮箱`git config --global user.email <your-email-address>`
       3. 确保 Git 输出内容带有颜色标记`git config --global color.ui auto`
       4. 对比显示原始状态`git config --global color.ui autogit config --list`
       5. `git config --list`
