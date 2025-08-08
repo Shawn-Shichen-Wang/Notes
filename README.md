@@ -10,7 +10,7 @@
 
 [Obsidian](./Obsidian.md)
 
-[LaTeX](./Latex.md)
+[LaTeX](./LaTeX.md)
 
 ## Linux相关
 
