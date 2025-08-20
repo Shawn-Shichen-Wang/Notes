@@ -351,6 +351,18 @@ git clone https://github.com/udacity/course-git-blog-project
 
 `git rm <filename>` 删除文件
 
+### git stash
+
+- 把**当前工作区（未暂存）**和**暂存区（已暂存）**的改动临时收起来，工作区恢复到干净状态；等需要时再取回
+- `git stash push -u -m "wip: 存放未提交的修改"`
+  - `-u/--include-untracked` 把*未跟踪*文件也一起收起
+  - `-a/--all` 连 `.gitignore` 忽略的也一起收起（少用，谨慎）
+  - `-m "说明"`
+  - `--staged` 只 stash 已暂存的改动
+  - `--keep-index` 只 stash 未暂存的改动
+- `git stash list` 列表
+- `git stash pop` 取回
+
 # [[Github]]
 
 ## 一个好的GitHub个人档案所需要具备的元素：
