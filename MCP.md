@@ -26,7 +26,7 @@ MCP 通过提供一个标准接口将 M*N 问题转化为 M+N 问题：每个 AI
 
 ![With MCP](https://huggingface.co/datasets/mcp-course/images/resolve/main/unit1/2.png)
 
-## 功能
+## Capabilities
 |  Capability   | Description                                                  | Example                                              |
 | :-----------: | :----------------------------------------------------------- | :--------------------------------------------------- |
 |   **Tools**   | AI 模型可以调用的可执行函数，用于执行操作或检索计算数据。通常与应用程序的使用案例相关。 | 一个天气应用的工具可能是一个返回特定位置天气的功能。 |
@@ -44,6 +44,124 @@ MCP 通过提供一个标准接口将 M*N 问题转化为 M+N 问题：每个 AI
 | Resources |    文档    | 包含应用程序文档的资源。                        |
 |  Prompts  |  代码风格  | 引导 LLM 生成代码的提示。                       |
 | Sampling  |  代码审查  | 一个样本，允许 LLM 审查代码并做出进一步的决定。 |
+
+### Tools
+> AI 模型可以通过 MCP 协议调用的可执行函数或操作
+
+- **Control** ：工具通常是 **模型** 控制的 ，这意味着 AI 模型（LLM）会根据用户的请求和上下文来决定何时调用它们。
+- **Safety** ：由于它们能够执行具有副作用的行为，工具执行可能存在危险。因此，它们通常需要明确获得用户的批准。
+- **Use Cases** ：发送消息、创建工单、查询 API、执行计算。
+
+**示例** ：一个获取指定位置当前天气数据的天气工具：
+
+```Python
+def get_weather(location: str) -> dict:
+    """Get the current weather for a specified location."""
+    # Connect to weather API and fetch data
+    return {
+        "temperature": 72,
+        "conditions": "Sunny",
+        "humidity": 45
+    }
+```
+
+### Resources
+
+> 资源提供对数据源的只读访问，允许 AI 模型检索上下文而不执行复杂的逻辑。
+
+- **Control** ：资源是 **应用程序** 控制的 ，这意味着主机应用程序通常决定何时访问它们。
+- **Nature** ：它们旨在以最小的计算进行数据检索，类似于 REST API 中的 GET 端点。
+- **Safety** ：由于它们是只读的，通常比工具具有更低的安全风险。
+- **Use Cases** ：访问文件内容、检索数据库记录、读取配置信息。
+
+**示例** ：一个提供文件内容访问的资源：
+
+```Python
+def read_file(file_path: str) -> str:
+    """Read the contents of a file at the specified path."""
+    with open(file_path, 'r') as f:
+        return f.read()
+```
+
+### Prompts
+
+> 提示是预定义的模板或工作流程，用于指导用户、AI 模型和服务器功能之间的交互。
+
+- **Control** ：提示是 **用户** 控制的 ，通常以选项的形式在主机应用程序的 UI 中呈现。
+- **Purpose**：它们构建交互以最佳地利用可用的 **工具** 和 **资源**。
+- **Selection** ：用户通常在 AI 模型开始处理之前选择一个提示，为交互设置上下文。
+- **Use Cases** ：常见的工作流程、专门的作业模板、引导式交互。
+
+**示例** ：生成代码审查的提示模板：
+
+```Python
+def code_review(code: str, language: str) -> list:
+    """Generate a code review for the provided code snippet."""
+    return [
+        {
+            "role": "system",
+            "content": f"You are a code reviewer examining {language} code. Provide a detailed review highlighting best practices, potential issues, and suggestions for improvement."
+        },
+        {
+            "role": "user",
+            "content": f"Please review this {language} code:\n\n```{language}\n{code}\n```"
+        }
+    ]
+```
+
+### Sampling
+
+> 采样允许服务器请求客户端（特别是主机应用程序）执行 LLM 交互。
+
+- **Control** ：采样由服务器发起，但需要客户端/主机协助。
+- **Purpose** ：它使服务器驱动的代理行为成为可能，并可能实现递归或多步骤交互。
+- **Safety** ：与工具类似，采样操作通常需要用户批准。
+- **Use Cases** ：复杂的多步骤任务、自主代理工作流程、交互式过程。
+
+**示例** ：服务器可能要求客户端分析它已处理的数据：
+
+```Python
+def request_sampling(messages, system_prompt=None, include_context="none"):
+    """Request LLM sampling from the client."""
+    # In a real implementation, this would send a request to the client
+    return {
+        "role": "assistant",
+        "content": "Analysis of the provided data..."
+    }
+```
+
+> 这种人机交互设计确保用户对 LLM 所看到和生成的内容保持控制。在实施采样时，提供清晰、结构良好的提示并包含相关上下文非常重要。
+
+采样流程遵循以下步骤：
+
+1. 服务器向客户端发送一个 `采样/创建消息 `请求
+2. 客户审查请求并可以修改它
+3. 客户端样本来自 LLM
+4. 客户审查完成结果
+5. 客户将结果返回服务器
+
+### Work Together
+
+| Capability | Controlled By |        Direction         |   Side Effects    |    Approval Needed    |            Typical Use Cases            |
+| :--------: | :-----------: | :----------------------: | :---------------: | :-------------------: | :-------------------------------------: |
+|   Tools    |  Model (LLM)  |     Client → Server      | Yes (potentially) |          Yes          |  Actions, API calls, data manipulation  |
+| Resources  |  Application  |     Client → Server      |  No (read-only)   |     Typically no      |    Data retrieval, context gathering    |
+|  Prompts   |     User      |     Server → Client      |        No         | No (selected by user) | Guided workflows, specialized templates |
+|  Sampling  |    Server     | Server → Client → Server |    Indirectly     |          Yes          |   Multi-step tasks, agentic behaviors   |
+1. 用户可以选择一个 **Prompts** 来启动一个专门的流程
+2. Prompts 可能包含来自 **Resources** 的上下文
+3. 在处理过程中，AI 模型可能会调用 **Tools** 来执行特定操作
+4. 对于复杂操作，服务器可能会使用 **Sampling** 来请求额外的 LLM 处理
+
+### Discovery Process
+
+MCP 的关键特性之一是动态能力发现。当客户端连接到服务器时，它可以通过特定的列表方法查询可用的工具、资源和提示：
+
+- `tools/list`：发现可用的工具
+- `resources/list`：发现可用的资源
+- `prompts/list`：发现可用的提示
+
+这种动态发现机制允许客户端无需硬编码了解服务器功能即可适应每个服务器提供的特定功能。
 
 ## 组件
 
@@ -181,3 +299,44 @@ Host 的职责包括：
 5. **能力调用** ：根据用户需求或 LLM 的判断，**Host** 指示 **Client** 从 **Server** 调用特定的能力。
 6. **服务器执行** ：**Server** 执行请求的功能，并将结果返回给 **Client**。
 7. **结果集成** ：**Client** 将这些结果反馈给 **Host** ，Host 将它们纳入 LLM 的上下文中或直接向用户展示。
+
+## MCP SDK
+
+SDK 提供类似的核心功能，遵循我们之前讨论的 MCP 协议规范。它们处理：
+
+- 协议级别的通信
+- 能力注册和发现
+- 消息序列化/反序列化
+- 连接管理
+- 错误处理
+
+```Python
+from mcp.server.fastmcp import FastMCP
+
+# Create an MCP server
+mcp = FastMCP("Weather Service")
+
+# Tool implementation
+@mcp.tool()
+def get_weather(location: str) -> str:
+    """Get the current weather for a specified location."""
+    return f"Weather in {location}: Sunny, 72°F"
+
+# Resource implementation
+@mcp.resource("weather://{location}")
+def weather_resource(location: str) -> str:
+    """Provide weather data as a resource."""
+    return f"Weather data for {location}: Sunny, 72°F"
+
+# Prompt implementation
+@mcp.prompt()
+def weather_report(location: str) -> str:
+    """Create a weather report prompt."""
+    return f"""You are a weather reporter. Weather report for {location}?"""
+
+
+# Run the server
+if __name__ == "__main__":
+    mcp.run()
+```
+
