@@ -398,6 +398,57 @@ git clone https://github.com/udacity/course-git-blog-project
 
 ***随着代码的增长去更新文档***
 
+##  为 Git 使用 SSH 认证
+
+1. [生成 SSH 密钥对](https://docs.github.com/zh/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+
+   ```bash
+   cd ~
+   # 如果 ~/.ssh 目录不存在，先创建
+   mkdir -p ~/.ssh
+   chmod 700 ~/.ssh
+   
+   # 生成 SSH 密钥（推荐 ed25519，安全且现代）
+   ssh-keygen -t ed25519 -C "your_email@example.com" \
+               -f ~/.ssh/id_ed25519 \
+               -N ""
+   ```
+
+   ```bash
+   说明：
+   -t ed25519 表示生成 Ed25519 类型的密钥。也可以用 -t rsa -b 4096。
+   -C "your_email@example.com" 是一个注释，可选。
+   -f ~/.ssh/id_ed25519 指定密钥文件名。
+   -N "" 表示密钥不设密码短语（如果你想每次不用输入 passphrase 可这么做，但安全性稍低）。
+   
+   生成后，会有两个文件：
+   ~/.ssh/id_ed25519 —— 私钥，不能泄露。
+   ~/.ssh/id_ed25519.pub —— 公钥，内容可复制给远程 Git 仓库。
+   ```
+
+2. [将公钥添加到远程 Git 仓库服务](https://docs.github.com/zh/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+
+   ```bash
+   2.1 cat ~/.ssh/id_ed25519.pub
+   2.2 复制输出的一整行（类似 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5… user@host）
+   2.3 登录 Git 托管服务，在SSH 公钥设置界面（例如 GitHub 的 “Settings → SSH & GPG keys”）粘贴这个公钥
+   ```
+
+  3. [将 SSH 私钥添加到 ssh-agent](https://docs.github.com/zh/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent?platform=linux#adding-your-ssh-key-to-the-ssh-agent)
+
+     - 3.1 在后台启动 ssh 代理 
+       	`eval "$(ssh-agent -s)"`
+     - 3.2 将 SSH 私钥添加到 ssh-agent
+       	`ssh-add ~/.ssh/id_ed25519`
+
+     
+
+4. 测试 SSH 连接
+
+   ```
+   ssh -T git@github.com
+   ```
+
 ## 远程仓库Git命令
 
 ### **特性分支**
@@ -412,6 +463,7 @@ git clone https://github.com/udacity/course-git-blog-project
 - -v 查看远程仓库的完整路径
 - `git remote rename mine origin` 重命名
 - `git remote remove <name>` 删除
+- `git remote set-url origin git@github.com:username/repo.git` 修改仓库远程 URL 为 SSH 协议
 
 ### git push
 
@@ -493,13 +545,10 @@ git clone https://github.com/udacity/course-git-blog-project
 
     - ```bash
       # 先获取Original仓库命名为upstream
-      git remote add upstream https://github.com/udacity/course-collaboration-travel-plans.git
-      ```
-
+      git remote add upstream https://github.com/udacity/course-collaboration-travel-plans.git```
     - ```bash
       # 拉取上游仓库变更
-      git pull upstream master
-      ```
+      git pull upstream master```
 
     - ```bash
       # 查看本地仓库更改日志
@@ -510,21 +559,18 @@ git clone https://github.com/udacity/course-git-blog-project
       # 本地仓库的master分支
       ```
 
-    - ```bash
+    -  ```bash
       # 获取对源仓库的master分支所做的更改
-      git fetch upstream master
-      ```
+      git fetch upstream master```
 
     - ```bash
       # 将上游master分支合并到本地master分支
       git checkout master
-      git merge upstream/master
-      ```
+      git merge upstream/master```
 
     - ```bash
       # 将上游更改push到Fork的远程仓库里
       git push origin master
-      ```
 
 ## 沟通
 
