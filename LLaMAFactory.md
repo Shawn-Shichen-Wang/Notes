@@ -58,9 +58,9 @@ LLama Factory 模型微调
 
        - sharegpt 格式支持**更多的角色种类**，例如 human、gpt、observation、function 等等
        - 注意其中 human 和 observation 必须出现在奇数位置，gpt 和 function 必须出现在偶数位置。默认所有的 gpt 和 function 会被用于学习。
-    
+        
        - [样例数据集](https://github.com/hiyouga/LLaMA-Factory/blob/main/data/glaive_toolcall_zh_demo.json)
-    
+        
        ```
        [
          {
@@ -91,6 +91,29 @@ LLama Factory 模型微调
 10. 开始训练
 
      ```
+     #!/bin/bash
+     
+     # === 显卡与环境 ===
+     export NCCL_P2P_DISABLE=1
+     export NCCL_IB_DISABLE=1
+     export CUDA_VISIBLE_DEVICES=1
+     
+     # === 编译器配置 ===
+     export CC=$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gcc
+     export CXX=$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++
+     
+     # === WandB 配置 ===
+     export WANDB_PROJECT="LLaMaFactory"
+     
+     # === 跳过版本检查 ===
+     export DISABLE_VERSION_CHECK=1
+     
+     # === 网络屏蔽 ===
+     export HF_HUB_OFFLINE=1
+     export UNSLOTH_NO_UPDATE=1
+     export WANDB_MODE=offline
+     
+     # === 训练命令 ===
      llamafactory-cli train \
          --stage sft \
          --do_train True \
@@ -108,11 +131,12 @@ LLama Factory 模型微调
          --gradient_accumulation_steps 32 \
          --lr_scheduler_type cosine \
          --logging_steps 2 \
-         --save_steps 50 \
+         --save_steps 10 \
          --warmup_steps 5 \
          --packing False \
          --report_to wandb \
-         --output_dir saves/Qwen3-8B-Intention/lora/SFT_V1 \
+         --run_name SFT_V2 \
+         --output_dir saves/Qwen3-8B-Intention/lora/SFT_V2 \
          --bf16 True \
          --plot_loss True \
          --trust_remote_code True \
@@ -128,7 +152,9 @@ LLama Factory 模型微调
          --eval_strategy steps \
          --eval_steps 10 \
          --per_device_eval_batch_size 1 \
-         --compute_accuracy True
+         --compute_accuracy True \
+         --metric_for_best_model eval_loss \
+         --load_best_model_at_end True 
      ```
 11. 部署原版模型
      ```
